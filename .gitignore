@@ -29,4 +29,6 @@ Thumbs.db
 
 # Logs
 *.log
+ticketdash.log
 
+.venv/

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — Ticket Dash{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block topbar_actions %}{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+  <h1 class="dashboard-hero">Ticket Dash</h1>
+  <form class="search-form" method="get" action="{{ url_for('dashboard') }}">
+    <div class="search-input-wrapper">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" name="q" placeholder="Search cases…" value="{{ current_query }}" class="search-input">
+    </div>
+  </form>
+</div>
+
+{% if cases %}
+<div class="cases-table-wrapper">
+  <table class="cases-table">
+    <thead>
+      <tr>
+        <th>Case</th>
+        <th>Customer</th>
+        <th>Requester</th>
+        <th>Product Area</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in cases %}
+      <tr class="case-row" onclick="window.location='{{ url_for('case_detail', case_id=c.id) }}'">
+        <td class="case-id">{{ c.id }}</td>
+        <td>{{ c.customer }}</td>
+        <td>{{ c.requester }}</td>
+        <td><span class="chip chip-area">{{ c.product_area }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+  <h3>No cases found</h3>
+  <p>{% if current_query or current_status or current_priority %}No cases match your filters. Try broadening your search.{% else %}No active cases in the <code>cases/</code> directory.{% endif %}</p>
+</div>
+{% endif %}
+{% endblock %}

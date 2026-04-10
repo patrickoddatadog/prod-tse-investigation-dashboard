@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Templates — Ticket Dash{% endblock %}
+{% block page_title %}Communication Templates{% endblock %}
+
+{% block content %}
+{% if groups %}
+  {% for group_name, files in groups.items() %}
+  <section class="template-group">
+    <h2 class="group-heading">{{ group_name }}</h2>
+    <div class="template-cards">
+      {% for f in files %}
+      <div class="template-card">
+        <div class="template-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+          <h3>{{ f.name }}</h3>
+          <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="template-card-body">
+          <div class="markdown-body">
+            {{ f.content_html | safe }}
+          </div>
+          <button class="btn btn-sm btn-copy" onclick="copyTemplate(this, `{{ f.content_raw | e }}`)" title="Copy raw markdown">Copy Markdown</button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+{% else %}
+<div class="empty-state">
+  <h3>No templates found</h3>
+  <p>Add templates to the <code>templates/</code> directory.</p>
+</div>
+{% endif %}
+
+{% block scripts %}
+<script>
+function copyTemplate(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy Markdown', 1500);
+  });
+}
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ filename }} — Archive — Ticket Dash{% endblock %}
+{% block page_title %}Archive: {{ filename }}{% endblock %}
+
+{% block topbar_actions %}
+<a href="{{ url_for('archive') }}" class="btn btn-ghost">&larr; Back to Archive</a>
+{% endblock %}
+
+{% block content %}
+<div class="markdown-body card-panel">
+  {{ content | safe }}
+</div>
+{% endblock %}

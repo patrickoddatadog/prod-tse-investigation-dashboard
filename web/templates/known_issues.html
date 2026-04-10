@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Known Issues — Ticket Dash{% endblock %}
+{% block page_title %}Known Issues & Workarounds{% endblock %}
+
+{% block content %}
+{% if content %}
+<div class="markdown-body card-panel">
+  {{ content | safe }}
+</div>
+{% else %}
+<div class="empty-state">
+  <h3>No known issues file found</h3>
+  <p>Add issues to <code>solutions/known-issues.md</code></p>
+</div>
+{% endif %}
+{% endblock %}

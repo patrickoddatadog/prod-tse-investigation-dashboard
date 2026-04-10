@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Archive — Ticket Dash{% endblock %}
+{% block page_title %}Archived Cases{% endblock %}
+
+{% block content %}
+{% if months %}
+  {% for month in months %}
+  <section class="archive-month">
+    <h2 class="group-heading">{{ month.name }}</h2>
+    <div class="archive-grid">
+      {% for entry in month.entries %}
+      <a href="{{ url_for('archive_detail', month=month.name, filename=entry.filename) }}" class="archive-card">
+        <div class="archive-card-id">{{ entry.name }}</div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+{% else %}
+<div class="empty-state">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+  <h3>No archived cases</h3>
+  <p>Resolved cases will appear here after archiving with <code>python3 scripts/zendesk_client.py archive &lt;id&gt;</code></p>
+</div>
+{% endif %}
+{% endblock %}

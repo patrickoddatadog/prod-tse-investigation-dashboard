@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Docs — Ticket Dash{% endblock %}
+{% block page_title %}Documentation{% endblock %}
+
+{% block content %}
+{% if content_map %}
+  {% for label, html in content_map.items() %}
+  <section class="doc-section">
+    <h2 class="group-heading">{{ label }}</h2>
+    <div class="markdown-body card-panel">
+      {{ html | safe }}
+    </div>
+  </section>
+  {% endfor %}
+{% else %}
+<div class="empty-state">
+  <h3>No documentation yet</h3>
+  <p>Add markdown files to the <code>docs/</code> directory.</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -38,7 +38,39 @@ TSEs are the front line of customer support. The goal is to:
 When asked to investigate a Zendesk ticket:
 
 ### Step 1: Fetch the Ticket
-Use MCP to pull the full ticket details including description and comments.
+Use the Glean MCP `search` tool with targeted arguments:
+
+**To fetch a specific ticket:**
+```json
+{ "query": "<ticket_number>", "app": "glean" }
+```
+- Use just the numeric ticket ID as the query (e.g. `"2533275"`, not `"ZD-2533275"`)
+- Always set `app: "glean"` to scope results and avoid noise from other sources
+- This returns the full ticket: description, all comments, metadata (assignee, status, priority, org, tags), and timestamps
+
+**To search for similar historical tickets:**
+```json
+{ "query": "<symptom keywords>", "app": "glean" }
+```
+- Use short, targeted keywords describing the symptoms (e.g. `"Data Access filtering restriction roles not working"`)
+- Avoid full sentences, boolean logic (OR/AND), or duplicate terms
+
+**To search internal documentation:**
+```json
+{ "query": "<topic keywords>", "app": "confluence" }
+```
+
+**To search engineering tickets:**
+```json
+{ "query": "<issue keywords>", "app": "jira" }
+```
+
+**To find Slack discussions (including dd.slack.com URLs):**
+```json
+{ "query": "<topic or thread keywords>", "app": "slack" }
+```
+
+Run these searches in parallel where possible (e.g. fetch the ticket from GLEAN while simultaneously searching Confluence and JIRA for related context).
 
 ### Step 2: Assess Available Information
 Check what the customer has provided:
@@ -150,7 +182,36 @@ When communicating with customers:
 - Escalation notifications
 - Resolution summaries
 
-### Step 7: Escalation Criteria
+### Step 7: Draft Customer Response
+
+**Every investigation must include a draft customer-facing response** in `notes.md`and be included in the WEB APP Ticket Dash. This is a required output, not optional. Addiotinally this customer-facing response should also be included in the WEB APP
+
+- Use the Brief-First approach: TL;DR → Action items → Explanation
+- Follow the communication guidelines from Step 6
+- Use relevant template from `templates/customer-communication/zoom-call.md`
+- The draft should be ready for the TSE to review, tweak, and send — not a rough outline
+- Include risk callouts if recommending configuration changes (per Step 5)
+- If more information is needed from the customer, draft a requesting-info message instead of a solution
+
+### Step 8: Zoom Call Preparation 
+
+**IT IS MANDATORY that every investigation must include a Zoom Call Preparation** in `notes.md`and be included in the WEB APP Ticket Dash. This is a MANDATORY output, not optional.
+
+- Use relevant templates from `templates/customer-communication/`
+
+### Step 9: TLDR Handover
+
+**IT IS MANDATORY that every investigation, must include a TLDR Handover** in `notes.md`and must be included in the WEB APP Ticket Dash. This is a MANDATORY output, not optional. 
+
+- Use relevant templates from `templates/customer-communication/`
+
+### Step 10: Leadership Summary 
+
+**IT IS MANDATORY that every investigation, must include a Leadership Summary** in `notes.md`and must be included in the WEB APP Ticket Dash. This is MANDATORY not optional. 
+
+- Use relevant templates from `templates/customer-communication/`
+
+### Step 11: Escalation Criteria
 
 **Escalate to TEE when:**
 - Issue appears to be a product bug (consistent, reproducible, unexpected behavior)
@@ -231,6 +292,12 @@ For each case investigation, create ONLY these files:
 - **`README.md`** — Case metadata and quick reference
 - **`notes.md`** — Your detailed investigation (exhaustive, for your reference and future TSEs)
 - **`assets/`** — Folder for logs, screenshots, flares, configs
+
+**Always include a Draft Customer Response** in `notes.md` under the "Draft Customer Response" section. ALwyas include this in the WEB APP Ticket Dash as well. Every investigation must produce a ready-to-review customer-facing message. Follow the Brief-First approach from Step 6 and use templates from `templates/customer-communication/`. The TSE reviews and adapts the draft before sending — never send without review.
+
+**Always include a Leadership Summary** in `notes.md` under the "Leadership Summary" section. ALwyas include this in the WEB APP Ticket Dash as well. Use templates from `templates/customer-communication/`. 
+
+**Always include a Zoom Call Preparation** in `notes.md`. Always include this in the WEB APP Ticket Dash as well. Use templates from `templates/customer-communication/`. 
 
 **Do NOT create** multiple variations like `CUSTOMER_MESSAGE.md`, `MESSAGE_SHORT.md`, `SUMMARY.md`, `SOLUTION.md`, etc. unless explicitly requested. Keep it simple and use the templates.
 

@@ -188,6 +188,30 @@ See `assets/screenshots/`:
 
 ---
 
+## Draft Customer Response
+
+> **Always include a draft customer-facing response.** Review and adapt before sending.
+> Follow the Brief-First approach: TL;DR → Action items → Explanation → Technical details (if needed).
+> Use templates from `templates/customer-communication/` as a starting point.
+
+```
+Hi [Customer Name],
+
+[TL;DR — 2-3 sentences: what's happening and what the next step is]
+
+[Action items or recommendations — bulleted, specific, actionable]
+
+[Brief explanation — why this is happening, kept simple]
+
+[Closing — offer further help, set expectations on next follow-up]
+
+Best regards,
+[Your Name]
+Datadog Technical Support
+```
+
+---
+
 ## Escalation Notes
 
 **Escalated:** [ ] Yes [ ] No
@@ -266,3 +290,4 @@ See `assets/screenshots/`:
 
 **Last Updated:** YYYY-MM-DD HH:MM
 
+**ALWAYS consult .cursorrrules. THIS IS MANDATORY. NEVER SKIP consulting .cursorrrules**
