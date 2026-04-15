@@ -1,4 +1,4 @@
-# TSE Investigation Hub - Getting Started
+# TSE Investigation Hub and Dashbaord - Getting Started
 
 ## What Is This?
 
