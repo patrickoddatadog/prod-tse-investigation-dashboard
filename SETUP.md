@@ -33,8 +33,8 @@ Before you begin, make sure you have the following installed:
 ### 1. Clone and open in Cursor
 
 ```bash
-git clone https://github.com/patrickoddatadog/tse-investigation-hub.git
-cd tse-investigation-hub
+git clone https://github.com/patrickoddatadog/pod-tse-investigation-hub.git
+cd pod-tse-investigation-hub
 ```
 
 Open the folder in [Cursor](https://cursor.com):
@@ -43,7 +43,7 @@ Open the folder in [Cursor](https://cursor.com):
 cursor .
 ```
 
-Or use **File > Open Folder** and select the `tse-investigation-hub` directory.
+Or use **File > Open Folder** and select the `pod-tse-investigation-hub` directory.
 
 ### 2. Tell Cursor: "Set me up"
 
@@ -122,16 +122,18 @@ If you get results, you're all set.
 ## Workspace Structure
 
 ```
-tse-investigation-hub/
+pod-tse-investigation-hub/
 ├── .cursor/
 │   ├── rules/               # AI behavior rules (investigation, comms, escalation)
 │   ├── hooks/                # Auto-checks for pending transcripts & escalations
-│   └── hooks.json            # Hook configuration
+│   ├── hooks.json            # Hook configuration
+│   └── skills/              # Reusable investigation skills
+│       ├── _shared/          # Shared utilities (Zendesk API helper)
+│       └── zendesk-ticket/   # Ticket investigation, classification, attachments, pool
 ├── app.py                    # POD Ticket Dashboard (Flask web app)
 ├── cases/                    # Active customer cases (gitignored)
 │   ├── .template/            # Template for new case folders
 │   └── ZD-XXXXXX/            # One folder per Zendesk ticket
-│       ├── README.md          # Case metadata
 │       ├── notes.md           # Investigation notes (all tabs rendered from this)
 │       └── assets/            # Logs, screenshots, recordings
 ├── archive/                  # Resolved cases by month (gitignored)
@@ -139,9 +141,10 @@ tse-investigation-hub/
 ├── templates/                # Customer communication & escalation templates
 │   ├── customer-communication/
 │   └── escalation/
-├── solutions/                # Known issues & workarounds
 ├── scripts/                  # CLI tools & utilities
 │   ├── jira_client.py         # JIRA search & escalation creation
+│   ├── zendesk_client.py      # Zendesk CLI tool
+│   ├── zendesk_mcp_server.py  # Zendesk MCP server
 │   ├── transcribe.py          # Whisper transcription for Zoom recordings
 │   └── start-server.sh        # Auto-restart wrapper for the web dashboard
 ├── reference/                # JIRA project codes, reference materials
@@ -310,4 +313,4 @@ For anything else: tell Cursor `"Help me troubleshoot my MCP setup"`
 
 - **Ask Cursor** -- it knows how the workspace works and can self-diagnose issues
 - **Slack:** #support-team
-- **Repo:** [github.com/patrickoddatadog/tse-investigation-hub](https://github.com/patrickoddatadog/tse-investigation-hub)
+- **Repo:** [github.com/patrickoddatadog/pod-tse-investigation-hub](https://github.com/patrickoddatadog/pod-tse-investigation-hub)
