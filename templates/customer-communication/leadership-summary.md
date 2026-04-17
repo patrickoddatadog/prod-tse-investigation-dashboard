@@ -17,12 +17,12 @@ Use this template for the `## Leadership Summary` section in `notes.md`. This po
 - No: ticket IDs, config values, CLI commands, product-specific jargon
 
 ### Investigation
-- **≤50 words.** No exceptions.
+- **≤45 words.** No exceptions.
 - What the TSE has done so far, in plain language.
 - No: bullet points, technical details, JIRA references
 
 ### Next Steps
-- **≤50 words.** No exceptions.
+- **≤45 words.** No exceptions.
 - What happens next, in plain language.
 - No: technical steps, commands, config changes
 
@@ -35,8 +35,8 @@ Use this template for the `## Leadership Summary` section in `notes.md`. This po
 Customer is receiving false alerts saying all servers are down when they are actually running. The issue is a configuration problem with how the monitoring system authenticates. A simple settings change will resolve it.
 
 ### Investigation
-Confirmed the alerts fired because the monitoring system could not verify its connection. Checked for platform outages and found none. Root cause is a settings issue on the customer's side.
+Confirmed the alerts fired because the monitoring system could not verify its connection. Checked for platform outages and found none. Root cause is settings issue on customer side.
 
 ### Next Steps
-Waiting for the customer to verify one setting in their configuration. Once confirmed, we will guide them through a quick fix that carries no risk.
+Waiting for customer to verify one setting in their configuration. Once confirmed, TSE guide them through a quick fix that carries no risk.
 ```

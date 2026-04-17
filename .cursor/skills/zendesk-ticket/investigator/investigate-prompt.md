@@ -345,6 +345,17 @@ _(Every code reference MUST include a clickable GitHub link. Never write file na
   3. ...
 ```
 
+After the Timeline, include the mandatory `## Proposed Customer Response` section:
+
+```markdown
+
+## Proposed Customer Response
+
+(The customer-facing message ONLY. Start with a greeting. No TL;DR, no summary preamble, no internal notes — just the message the TSE would copy-paste to the customer. Direct, professional tone. Include specific commands and doc links as needed.)
+```
+
+**CRITICAL:** The `## Proposed Customer Response` section must contain ONLY the customer-facing message body. Do NOT include any TL;DR line, summary preamble, or internal annotations. The TL;DR belongs in `response.md` and `## TLDR Handover` — never in this section.
+
 At the end of `notes.md`, ALWAYS include the Investigation Decision:
 
 ```markdown

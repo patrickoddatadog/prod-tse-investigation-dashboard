@@ -10,17 +10,48 @@
 {% block content %}
 <div class="tabs" id="case-tabs">
   <button class="tab active" data-tab="overview">Proposed Customer Response</button>
-  {% if case.has_notes %}
-  <button class="tab" data-tab="notes">Investigation Notes</button>
-  {% endif %}
+  <button class="tab" data-tab="tldr">TLDR</button>
   <button class="tab" data-tab="leadership">Leadership Summary</button>
   <button class="tab" data-tab="zoom">Zoom Call Prep</button>
   <button class="tab" data-tab="transcript">Zoom Call Transcript</button>
   <button class="tab" data-tab="escalation">Escalation</button>
+  {% if case.has_notes %}
+  <button class="tab" data-tab="notes">Investigation Notes</button>
+  {% endif %}
 </div>
 
 <div class="tab-panels">
   <div class="tab-panel active" id="panel-overview">
+    {% if case.proposed_response_html %}
+    <div class="proposed-response-card">
+      <div class="proposed-response-header">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <h3>Proposed Customer Response</h3>
+        <button class="btn btn-sm btn-copy" onclick="copyCard(this, 'proposed-response-raw')">Copy</button>
+      </div>
+      <div class="proposed-response-body markdown-body">
+        {{ case.proposed_response_html | safe }}
+      </div>
+      <textarea class="sr-only" id="proposed-response-raw">{{ case.proposed_response_raw }}</textarea>
+    </div>
+    {% endif %}
+
+    {% if case.important_links_html %}
+    <div class="important-links-card">
+      <div class="important-links-header">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <h3>Important Links</h3>
+        <button class="btn btn-sm btn-copy" onclick="copyCard(this, 'important-links-raw')">Copy</button>
+      </div>
+      <div class="important-links-body markdown-body">
+        {{ case.important_links_html | safe }}
+      </div>
+      <textarea class="sr-only" id="important-links-raw">{{ case.important_links_raw }}</textarea>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="tab-panel" id="panel-tldr">
     {% if case.issue_summary_html or case.next_steps_html %}
     <div class="tldr-card">
       <div class="tldr-header">
@@ -49,39 +80,9 @@
 {{ case.next_steps_raw }}
 {% endif %}</textarea>
     </div>
+    {% else %}
+    <div class="empty-state">No TLDR content available for this case.</div>
     {% endif %}
-
-    {% if case.proposed_response_html %}
-    <div class="proposed-response-card">
-      <div class="proposed-response-header">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <h3>Proposed Customer Response</h3>
-        <button class="btn btn-sm btn-copy" onclick="copyCard(this, 'proposed-response-raw')">Copy</button>
-      </div>
-      <div class="proposed-response-body markdown-body">
-        {{ case.proposed_response_html | safe }}
-      </div>
-      <textarea class="sr-only" id="proposed-response-raw">{{ case.proposed_response_raw }}</textarea>
-    </div>
-    {% endif %}
-
-    {% if case.important_links_html %}
-    <div class="important-links-card">
-      <div class="important-links-header">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <h3>Important Links</h3>
-        <button class="btn btn-sm btn-copy" onclick="copyCard(this, 'important-links-raw')">Copy</button>
-      </div>
-      <div class="important-links-body markdown-body">
-        {{ case.important_links_html | safe }}
-      </div>
-      <textarea class="sr-only" id="important-links-raw">{{ case.important_links_raw }}</textarea>
-    </div>
-    {% endif %}
-
-    <div class="markdown-body">
-      {{ case.readme_html | safe }}
-    </div>
   </div>
 
   {% if case.has_notes %}
