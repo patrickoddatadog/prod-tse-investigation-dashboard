@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}POD Ticket Dashboard{% endblock %}</title>
+  <title>{% block title %}HQ TSE Dashboard{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
     <div class="sidebar-header">
       <div class="logo">
         <span class="logo-icon">&#9670;</span>
-        <span class="logo-text">POD Ticket Dashboard</span>
+        <span class="logo-text">HQ TSE Dashboard</span>
       </div>
     </div>
     <ul class="nav-links">
@@ -23,8 +23,9 @@
         Dashboard
       </a></li>
     </ul>
+    {% block sidebar_cases %}{% endblock %}
     <div class="sidebar-footer">
-      <div class="sidebar-footer-text">POD Ticket Dashboard v1.0</div>
+      <div class="sidebar-footer-text">HQ TSE Dashboard v1.0</div>
     </div>
   </nav>
 

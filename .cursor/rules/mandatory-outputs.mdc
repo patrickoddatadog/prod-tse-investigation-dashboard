@@ -12,7 +12,7 @@ Every investigation **must** produce all of the following as **separate `##` sec
 - [ ] **Proposed Customer Response** (`## Proposed Customer Response`) — Contains ONLY the customer-facing message body (greeting → explanation → action items → sign-off). **No TL;DR, no summary preamble, no internal notes.** The TSE reviews and adapts before sending — never send without review. Populates POD Ticket Dashboard "Proposed Customer Response" tab.
 - [ ] **Zoom Call Preparation** (`## Zoom Call Preparation`) — Use ONLY @templates/customer-communication/zoom-call.md. Populate POD Ticket Dashboard "Zoom Call" tab.
 - [ ] **Leadership Summary** (`## Leadership Summary`) — Use ONLY @templates/customer-communication/leadership-summary.md. Populate POD Ticket Dashboard "Leadership Summary" tab. **NON-TECHNICAL audience (managers).** Strict word limits: Leadership Summary ≤45 words, Investigation ≤50 words, Next Steps ≤50 words. No jargon, no config values, no ticket IDs.
-- [ ] **TLDR Handover** (`## TLDR Handover`) — Use ONLY @templates/customer-communication/tldr-handover.md. This is a **separate section** from Leadership Summary. It targets TSEs and managers and **CAN include technical detail**. 
+- [ ] **TLDR Handover** (`## TLDR Handover`) — Use ONLY @templates/customer-communication/tldr-handover.md. This is a **separate section** from Leadership Summary. It targets TSEs and managers and **CAN include technical detail**. It is Mandatroy to populate the 'TLDR' tab in the Web APP with this section.
 
 ## Leadership Summary vs TLDR Handover — They Are DIFFERENT
 

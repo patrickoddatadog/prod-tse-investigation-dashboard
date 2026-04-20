@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-POD Ticket Dashboard — Local Web App
+HQ TSE Dashboard — Local Web App
 
 Run with: python app.py
 Then open: http://localhost:5001
@@ -180,6 +180,14 @@ def extract_issue_summary(readme_raw: str) -> str:
 def extract_next_steps(notes_raw: str) -> str:
     """Pull the Next Steps / Recommended Next Steps section from notes.md."""
     return _extract_section(notes_raw, _NEXT_STEPS_HEADING_RE)
+
+
+def extract_tldr_handover(notes_raw: str) -> str:
+    """Pull the full ## TLDR Handover section from notes.md."""
+    return _extract_section(
+        notes_raw,
+        re.compile(r"^##\s+TLDR\s+Handover", re.IGNORECASE),
+    )
 
 
 def extract_leadership_summary(notes_raw: str) -> str:
@@ -516,6 +524,7 @@ def load_case(case_id: str) -> Optional[dict]:
     proposed_raw = extract_proposed_response(notes_raw)
     summary_raw = extract_issue_summary(readme_raw)
     next_steps_raw = extract_next_steps(notes_raw)
+    tldr_handover_raw = extract_tldr_handover(notes_raw)
     leadership_raw = extract_leadership_summary(notes_raw)
     zoom_raw = extract_zoom_call(notes_raw)
     zoom_transcript_raw = extract_zoom_transcript(notes_raw)
@@ -559,6 +568,8 @@ def load_case(case_id: str) -> Optional[dict]:
         "issue_summary_html": render_md(summary_raw) if summary_raw else "",
         "next_steps_raw": next_steps_raw,
         "next_steps_html": render_md(next_steps_raw) if next_steps_raw else "",
+        "tldr_handover_raw": tldr_handover_raw,
+        "tldr_handover_html": render_md(tldr_handover_raw) if tldr_handover_raw else "",
         "leadership_raw": leadership_raw,
         "leadership_html": render_md(leadership_raw) if leadership_raw else "",
         "zoom_raw": zoom_raw,
@@ -651,12 +662,23 @@ def case_detail(case_id: str):
         for r in recordings
     ) if recordings_dir.exists() else False
 
+    sidebar_cases = []
+    for d in get_case_dirs():
+        sc = load_case(d.name)
+        if sc:
+            sidebar_cases.append({
+                "id": sc["id"],
+                "customer": sc["customer"],
+                "requester": sc["requester"],
+            })
+
     return render_template(
         "case_detail.html",
         case=case,
         assets=assets,
         recordings=recordings,
         transcribing=transcribing,
+        sidebar_cases=sidebar_cases,
     )
 
 
@@ -987,6 +1009,6 @@ def not_found(e):
 
 
 if __name__ == "__main__":
-    print("\n  POD Ticket Dashboard")
+    print("\n  HQ TSE Dashboard")
     print("  http://localhost:8501\n")
     app.run(debug=True, port=8501)

@@ -1,6 +1,6 @@
 # TLDR Handover
 
-Use this template for the `## TLDR Handover` section in `notes.md`.
+Use this template for the `## TLDR Handover` section in `notes.md` and to populate the 'TLDR' tab in the Web APP.
 
 **This is NOT the same as the Leadership Summary.** The Leadership Summary is a separate `##` section — see `leadership-summary.md`.
 
@@ -10,7 +10,7 @@ Use this template for the `## TLDR Handover` section in `notes.md`.
 
 ## Required Sub-sections (exactly 5)
 
-### Leadership Summary
+### Summary
 - **≤45 words.** Same non-technical summary as the `## Leadership Summary` section.
 - This is duplicated here so the TLDR Handover is self-contained.
 

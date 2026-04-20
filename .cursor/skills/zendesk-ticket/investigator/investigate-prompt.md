@@ -356,6 +356,28 @@ After the Timeline, include the mandatory `## Proposed Customer Response` sectio
 
 **CRITICAL:** The `## Proposed Customer Response` section must contain ONLY the customer-facing message body. Do NOT include any TL;DR line, summary preamble, or internal annotations. The TL;DR belongs in `response.md` and `## TLDR Handover` — never in this section.
 
+After the Proposed Customer Response, include the mandatory `## TLDR Handover` section. **This section directly populates the "TLDR" tab in the HQ TSE Dashboard web app.** Use the template from `templates/customer-communication/tldr-handover.md`. It must contain exactly 5 subsections:
+
+```markdown
+
+## TLDR Handover
+
+### Summary of Issue
+(≤45 words. Same non-technical summary as Leadership Summary.)
+
+### Investigation
+(Steps undertaken so far. Include technical details: product names, config values, ticket IDs, JIRA references.)
+
+### Next Steps
+(Technical steps for the next TSE. Include specific commands, config changes, or actions.)
+
+### Need from Customer
+(What information or action is still needed. Be specific.)
+
+### Important Links
+(Internal docs, public docs, Zendesk tickets, JIRA tickets — all hyperlinked.)
+```
+
 At the end of `notes.md`, ALWAYS include the Investigation Decision:
 
 ```markdown
@@ -441,10 +463,14 @@ After appending, update the `## Investigation Decision` section in `notes.md` an
 Also update `cases/ZD-{{TICKET_ID}}/response.md` with a revised customer response draft if the investigation produced new findings.
 
 The expected section order at the end of `notes.md` is:
-1. `## Investigation Decision` — routing decision
-2. `## Review History` — preserved (if present)
-3. `## Session Context` — preserved as-is (if present)
-4. `## Chat TLDR` — preserved as-is (if present)
+1. `## Proposed Customer Response` — customer-facing message
+2. `## TLDR Handover` — populates the TLDR tab in the web app
+3. `## Leadership Summary` — populates the Leadership Summary tab
+4. `## Zoom Call Preparation` — populates the Zoom Call tab
+5. `## Investigation Decision` — routing decision
+6. `## Review History` — preserved (if present)
+7. `## Session Context` — preserved as-is (if present)
+8. `## Chat TLDR` — preserved as-is (if present)
 
 ### 7d: Update the Ticket Summary status
 
