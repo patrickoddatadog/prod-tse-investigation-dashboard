@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-JIRA Client for TSE Investigation Hub
+JIRA Client for Prod TSE Investigation Dashboard
 
 Utility for querying and archiving JIRA tickets from the SCRS project.
 Reads credentials from ../.env file.

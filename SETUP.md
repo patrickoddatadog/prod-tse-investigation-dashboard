@@ -1,4 +1,4 @@
-# TSE Investigation Hub and Dashbaord - Getting Started
+# Prod TSE Investigation Dashboard - Getting Started
 
 ## What Is This?
 
@@ -33,8 +33,8 @@ Before you begin, make sure you have the following installed:
 ### 1. Clone and open in Cursor
 
 ```bash
-git clone https://github.com/patrickoddatadog/pod-tse-investigation-hub.git
-cd pod-tse-investigation-hub
+git clone https://github.com/patrickoddatadog/prod-tse-investigation-dashboard.git
+cd prod-tse-investigation-dashboard
 ```
 
 Open the folder in [Cursor](https://cursor.com):
@@ -43,7 +43,7 @@ Open the folder in [Cursor](https://cursor.com):
 cursor .
 ```
 
-Or use **File > Open Folder** and select the `pod-tse-investigation-hub` directory.
+Or use **File > Open Folder** and select the `prod-tse-investigation-dashboard` directory.
 
 ### 2. Tell Cursor: "Set me up"
 
@@ -122,7 +122,7 @@ If you get results, you're all set.
 ## Workspace Structure
 
 ```
-pod-tse-investigation-hub/
+prod-tse-investigation-dashboard/
 ├── .cursor/
 │   ├── rules/               # AI behavior rules (investigation, comms, escalation)
 │   ├── hooks/                # Auto-checks for pending transcripts & escalations
@@ -313,4 +313,4 @@ For anything else: tell Cursor `"Help me troubleshoot my MCP setup"`
 
 - **Ask Cursor** -- it knows how the workspace works and can self-diagnose issues
 - **Slack:** #support-team
-- **Repo:** [github.com/patrickoddatadog/pod-tse-investigation-hub](https://github.com/patrickoddatadog/pod-tse-investigation-hub)
+- **Repo:** [github.com/patrickoddatadog/prod-tse-investigation-dashboard](https://github.com/patrickoddatadog/prod-tse-investigation-dashboard)

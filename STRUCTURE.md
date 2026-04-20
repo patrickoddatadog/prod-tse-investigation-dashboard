@@ -1,13 +1,13 @@
-# TSE Investigation Hub - Structure
+# Prod TSE Investigation Dashboard - Structure
 
-This document explains the structure and purpose of the TSE Investigation Hub workspace.
+This document explains the structure and purpose of the Prod TSE Investigation Dashboard workspace.
 
 ---
 
 ## Directory Structure
 
 ```
-pod-tse-investigation-hub/
+prod-tse-investigation-dashboard/
 │
 ├── .cursor/                          # Cursor AI configuration
 │   ├── rules/                        # AI behavior rules
@@ -184,4 +184,4 @@ Only templates, rules, scripts, documentation, and the web dashboard are version
 
 ---
 
-**Summary:** The TSE Investigation Hub is an AI-powered workspace for Technical Support Engineers at Datadog. It combines Cursor rules, skills, and MCP integrations with a local web dashboard to streamline ticket investigation, customer communication, and engineering escalation.
+**Summary:** The Prod TSE Investigation Dashboard is an AI-powered workspace for Technical Support Engineers at Datadog. It combines Cursor rules, skills, and MCP integrations with a local web dashboard to streamline ticket investigation, customer communication, and engineering escalation.

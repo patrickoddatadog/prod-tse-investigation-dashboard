@@ -1,9 +1,9 @@
 ---
-description: Foundational context for the TSE Investigation Hub — defines who TSEs are, their role, and core goals.
+description: Foundational context for the Prod TSE Investigation Dashboard — defines who TSEs are, their role, and core goals.
 alwaysApply: true
 ---
 
-# TSE Investigation Hub - Context
+# Prod TSE Investigation Dashboard - Context
 
 This workspace is for Technical Support Engineers (TSEs) at Datadog. TSEs work directly with customers to diagnose and resolve technical issues. When stuck, they escalate to Engineering who determine if it's a product bug requiring attention.
 

@@ -1,4 +1,4 @@
-# Git Strategy for TSE Investigation Hub
+# Git Strategy for Prod TSE Investigation Dashboard
 
 This document outlines what should and shouldn't be committed to git for team sharing.
 
@@ -6,7 +6,7 @@ This document outlines what should and shouldn't be committed to git for team sh
 
 ## Repository
 
-- **Public repo:** [github.com/patrickoddatadog/pod-tse-investigation-hub](https://github.com/patrickoddatadog/pod-tse-investigation-hub)
+- **Public repo:** [github.com/patrickoddatadog/prod-tse-investigation-dashboard](https://github.com/patrickoddatadog/prod-tse-investigation-dashboard)
 - **Branch:** `main`
 
 ---
@@ -207,8 +207,8 @@ ticketdash.log
 
 ```bash
 # 1. Clone
-git clone https://github.com/patrickoddatadog/pod-tse-investigation-hub.git
-cd pod-tse-investigation-hub
+git clone https://github.com/patrickoddatadog/prod-tse-investigation-dashboard.git
+cd prod-tse-investigation-dashboard
 
 # 2. Set up credentials (NOT in git)
 cp .env.example .env

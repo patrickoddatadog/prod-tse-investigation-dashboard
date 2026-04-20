@@ -1,6 +1,6 @@
-# GitHub Setup for TSE Investigation Hub
+# GitHub Setup for Prod TSE Investigation Dashboard
 
-This repo is already live at [github.com/patrickoddatadog/pod-tse-investigation-hub](https://github.com/patrickoddatadog/pod-tse-investigation-hub). This guide covers how to clone, contribute, and manage the repository.
+This repo is already live at [github.com/patrickoddatadog/prod-tse-investigation-dashboard](https://github.com/patrickoddatadog/prod-tse-investigation-dashboard). This guide covers how to clone, contribute, and manage the repository.
 
 ---
 
@@ -8,8 +8,8 @@ This repo is already live at [github.com/patrickoddatadog/pod-tse-investigation-
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/patrickoddatadog/pod-tse-investigation-hub.git
-cd pod-tse-investigation-hub
+git clone https://github.com/patrickoddatadog/prod-tse-investigation-dashboard.git
+cd prod-tse-investigation-dashboard
 
 # 2. Set up credentials (NOT in git)
 cp .env.example .env
@@ -35,7 +35,7 @@ cursor .
 ## Repository Structure on GitHub
 
 ```
-pod-tse-investigation-hub/
+prod-tse-investigation-dashboard/
 ├── .cursor/
 │   ├── rules/                    # AI behavior rules
 │   │   ├── investigation-workflow.mdc
@@ -87,7 +87,7 @@ The repo has three remotes configured:
 
 | Remote | URL | Purpose |
 |--------|-----|---------|
-| `personal` | `github.com/patrickoddatadog/pod-tse-investigation-hub` | Public repo (primary) |
+| `personal` | `github.com/patrickoddatadog/prod-tse-investigation-dashboard` | Public repo (primary) |
 | `origin` | `github.com/patrick-odonovan_ddog/tse-investigation-hub` | Work account fork |
 | `upstream` | `github.com/eoghanm2013/tse-investigation-hub` | Original repo |
 
@@ -176,10 +176,10 @@ Add topics for discoverability:
 ```
 Hey team,
 
-I've set up the TSE Investigation Hub — an AI-powered workspace for
+I've set up the Prod TSE Investigation Dashboard — an AI-powered workspace for
 investigating customer cases in Cursor.
 
-Repo: https://github.com/patrickoddatadog/pod-tse-investigation-hub
+Repo: https://github.com/patrickoddatadog/prod-tse-investigation-dashboard
 
 Features:
 - AI-assisted Zendesk ticket investigation via Glean, JIRA, Confluence
@@ -202,7 +202,7 @@ Questions? Check QUICK_START.md or ask in #support-team
 
 ### Permission Denied
 ```
-ERROR: Permission to patrickoddatadog/pod-tse-investigation-hub.git denied
+ERROR: Permission to patrickoddatadog/prod-tse-investigation-dashboard.git denied
 ```
 1. Verify you have access to the repo
 2. Check SSH key: `ssh -T git@github.com`
@@ -214,7 +214,7 @@ ERROR: Repository not found
 ```
 1. Check the remote URL: `git remote -v`
 2. Ensure you're authenticated as the correct GitHub user
-3. Update if wrong: `git remote set-url personal https://github.com/patrickoddatadog/pod-tse-investigation-hub.git`
+3. Update if wrong: `git remote set-url personal https://github.com/patrickoddatadog/prod-tse-investigation-dashboard.git`
 
 ### Accidentally Pushed Secrets
 

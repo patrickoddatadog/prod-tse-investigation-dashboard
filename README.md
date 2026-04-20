@@ -1,4 +1,4 @@
-# POD TSE Investigation Hub
+# Prod TSE Investigation Dashboard
 
 AI-powered investigation workspace for Technical Support Engineers at Datadog. Combines [Cursor AI](https://cursor.com) with MCP integrations (Glean, JIRA, Confluence, GitHub) and a local web dashboard to streamline ticket investigation, customer communication, and engineering escalation.
 
@@ -10,8 +10,8 @@ AI-powered investigation workspace for Technical Support Engineers at Datadog. C
 
 ```bash
 # 1. Clone and open in Cursor
-git clone https://github.com/patrickoddatadog/pod-tse-investigation-hub.git
-cd pod-tse-investigation-hub
+git clone https://github.com/patrickoddatadog/prod-tse-investigation-dashboard.git
+cd prod-tse-investigation-dashboard
 cursor .
 
 # 2. Set up credentials
@@ -46,7 +46,7 @@ Then ask Cursor:
 ## Structure
 
 ```
-pod-tse-investigation-hub/
+prod-tse-investigation-dashboard/
 ├── .cursor/
 │   ├── rules/                # AI behavior rules (9 rules)
 │   ├── hooks/                # Session hooks (transcript & escalation checks)

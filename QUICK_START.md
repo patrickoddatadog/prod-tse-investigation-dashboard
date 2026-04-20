@@ -1,4 +1,4 @@
-# TSE Investigation Hub - Quick Start
+# Prod TSE Investigation Dashboard - Quick Start
 
 **TL;DR:** This workspace helps TSEs investigate customer cases using AI-assisted workflows, with a local web dashboard for visualization.
 
@@ -20,8 +20,8 @@ A Cursor AI workspace for Technical Support Engineers (TSEs) to:
 
 ```bash
 # 1. Clone and open in Cursor
-git clone https://github.com/patrickoddatadog/pod-tse-investigation-hub.git
-cd pod-tse-investigation-hub
+git clone https://github.com/patrickoddatadog/prod-tse-investigation-dashboard.git
+cd prod-tse-investigation-dashboard
 cursor .
 
 # 2. Set up credentials
@@ -193,7 +193,7 @@ Pre-configured AI rules that shape how Cursor assists you:
 - **Full setup guide:** [SETUP.md](SETUP.md)
 - **Workspace structure:** [STRUCTURE.md](STRUCTURE.md)
 - **Escalation criteria:** [docs/escalation-criteria.md](docs/escalation-criteria.md)
-- **Repo:** [github.com/patrickoddatadog/pod-tse-investigation-hub](https://github.com/patrickoddatadog/pod-tse-investigation-hub)
+- **Repo:** [github.com/patrickoddatadog/prod-tse-investigation-dashboard](https://github.com/patrickoddatadog/prod-tse-investigation-dashboard)
 
 ---
 
