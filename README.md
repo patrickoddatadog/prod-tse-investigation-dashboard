@@ -10,7 +10,7 @@ AI-powered investigation workspace for Technical Support Engineers at Datadog. C
 
 ```bash
 # 1. Clone and open in Cursor
-git clone https://github.com/patrickoddatadog/prod-tse-investigation-dashboard.git
+git clone https://github.com/eoghanm2013/tse-investigation-hub.git
 cd prod-tse-investigation-dashboard
 cursor .
 
@@ -35,11 +35,12 @@ Then ask Cursor:
 | Capability | How |
 |---|---|
 | **Investigate tickets** | Ask Cursor to investigate any Zendesk ticket — it fetches context via Glean, searches for similar cases, and creates structured investigation notes |
-| **Web dashboard** | Local Flask app at `localhost:8501` with tabbed case views (overview, investigation, Zoom prep, leadership summary, handover, escalation) |
+| **Web dashboard** | Local Flask app at `localhost:8501` with tabbed case views (overview, investigation, Zoom prep, transcript, leadership summary, handover, feature request, escalation) |
 | **Zoom transcription** | Upload call recordings — Whisper transcribes, OpenAI summarises for a technical audience |
-| **Auto-generated outputs** | Every investigation produces a customer response draft, Zoom prep, leadership summary, TLDR handover, and escalation summary |
-| **One-click escalation** | Generate JIRA-ready escalation summaries from investigation notes |
-| **Customer communication** | Pre-built templates for acknowledgments, info requests, solutions, escalation notices |
+| **Auto-generated outputs** | Customer response draft, Zoom prep, leadership summary, TLDR handover, **feature request** summary, and escalation summary (OpenAI-powered where noted) |
+| **One-click escalation** | **Escalation** tab: generate JIRA-ready escalation summaries from `notes.md` |
+| **Feature request generation** | **Feature Request** tab: generate or regenerate a JIRA-ready internal feature request from `README.md` + investigation notes (`OPENAI_API_KEY` required) |
+| **Customer communication** | Templates under `templates/communication/` (acknowledgments, info requests, solutions, escalation notices, leadership summary, handover, Zoom prep, feature request) |
 
 ---
 
@@ -48,7 +49,7 @@ Then ask Cursor:
 ```
 prod-tse-investigation-dashboard/
 ├── .cursor/
-│   ├── rules/                # AI behavior rules (9 rules)
+│   ├── rules/                # AI behavior rules (10 rules)
 │   ├── hooks/                # Session hooks (transcript & escalation checks)
 │   ├── skills/               # Investigation skills (investigator, classifier, pool, attachments)
 │   └── hooks.json
@@ -57,7 +58,7 @@ prod-tse-investigation-dashboard/
 │   ├── .template/            # Template for new case folders
 │   └── ZD-XXXXXX/            # One folder per ticket
 ├── archive/                  # Resolved cases (gitignored)
-├── templates/                # Customer communication & escalation templates
+├── templates/                # communication/, escalation/, etc.
 ├── docs/                     # Escalation criteria, product docs
 ├── scripts/                  # CLI tools (JIRA, Zendesk, transcription, server)
 ├── web/                      # Dashboard HTML templates & CSS
@@ -82,14 +83,15 @@ python3 app.py
 
 Then open **http://localhost:8501**.
 
-**Dashboard tabs** (each renders a `##` section from `notes.md`):
+**Dashboard tabs** (each renders a `##` section from `notes.md` where applicable):
 - **Overview** — issue summary and proposed customer response
 - **Investigation Notes** — full investigation documentation
 - **Zoom Call** — call preparation agenda
 - **Zoom Call Transcript** — upload audio, auto-transcribe, summarise
 - **Leadership Summary** — non-technical summary for managers
 - **TLDR Handover** — technical handover for other TSEs
-- **Escalation** — generate JIRA-ready escalation summaries
+- **Feature Request** — **Generate Feature Request Summary** writes `## Feature Request` in `notes.md` (OpenAI + `templates/communication/feature-request.md`); use **Regenerate** after updating the case
+- **Escalation** — **Generate Escalation Summary** for JIRA-ready engineering escalation text
 
 ---
 
@@ -99,8 +101,8 @@ Then open **http://localhost:8501**.
 > "Investigate Zendesk ticket 12345"
 
 Cursor will:
-1. Fetch the ticket via Glean
-2. Search for similar historical cases in JIRA, Confluence, and the archive
+1. Fetch the ticket (Zendesk via Chrome session or Glean, per skills setup)
+2. Search for similar historical cases in JIRA, Confluence, Glean, and the local `archive/`
 3. Create a case folder in `cases/ZD-12345/`
 4. Generate `notes.md` with all mandatory sections
 
@@ -119,6 +121,11 @@ Cursor will:
 2. Click **Generate Escalation Summary** on the Escalation tab
 3. Ask Cursor: `"Create JIRA escalation for ZD-12345"`
 
+**Feature request workflow:**
+1. Keep `cases/ZD-12345/README.md` and `notes.md` up to date with customer ask, impact, and technical context
+2. Open the **Feature Request** tab and click **Generate Feature Request Summary** (requires `OPENAI_API_KEY` in `.env`)
+3. Review and edit the `## Feature Request` section in `notes.md` before pasting into internal FR / JIRA triage
+
 ---
 
 ## Cursor Rules, Skills & Hooks
@@ -136,6 +143,7 @@ Cursor will:
 | `api-access-constraints` | Read/write boundaries per service |
 | `tse-context` | Role context and workspace layout |
 | `output-standards` | File structure and data protection |
+| `feature-request` | When generating the `## Feature Request` section for engineering triage |
 
 ### Skills (`.cursor/skills/`)
 
@@ -183,6 +191,7 @@ Session hooks run automatically to flag unsummarised transcripts and pending esc
 | Dashboard won't start | Check `python3 --version` (need 3.9+); check port 8501 |
 | Whisper fails | Install ffmpeg: `brew install ffmpeg` |
 | OpenAI summarisation fails | Check `OPENAI_API_KEY` in `.env` |
+| Feature Request / Escalation button does nothing | Same as OpenAI — both use the API; check browser console and server logs |
 
 ---
 
@@ -205,6 +214,7 @@ See [GIT_STRATEGY.md](GIT_STRATEGY.md) for what to commit and what to keep local
 - **[GIT_STRATEGY.md](GIT_STRATEGY.md)** — What to commit / not commit
 - **[GITHUB_SETUP.md](GITHUB_SETUP.md)** — Repository management and push workflow
 - **[docs/escalation-criteria.md](docs/escalation-criteria.md)** — When to escalate to Engineering
+- **[docs/agent-flow.md](docs/agent-flow.md)** — How Cursor investigation relates to the dashboard (Mermaid source: `docs/agent-flow.mmd`)
 
 ---
 

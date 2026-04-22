@@ -8,11 +8,12 @@
 
 A Cursor AI workspace for Technical Support Engineers (TSEs) to:
 - Investigate Zendesk tickets with AI-powered search across Glean, JIRA, Confluence, and GitHub
-- Document investigations systematically with mandatory outputs (customer response, leadership summary, handover, Zoom prep)
+- Document investigations systematically with mandatory outputs (customer response, leadership summary, handover, Zoom prep, feature request section when needed)
 - Visualize cases in a local web dashboard (POD Ticket Dashboard)
 - Transcribe and summarise Zoom call recordings with Whisper + OpenAI
+- Generate **JIRA-ready feature request** copy from case notes (dashboard **Feature Request** tab + OpenAI)
 - Escalate to Engineering with properly formatted JIRA tickets
-- Communicate clearly with customers using pre-built templates
+- Communicate clearly with customers using pre-built templates under `templates/communication/`
 
 ---
 
@@ -20,8 +21,8 @@ A Cursor AI workspace for Technical Support Engineers (TSEs) to:
 
 ```bash
 # 1. Clone and open in Cursor
-git clone https://github.com/patrickoddatadog/prod-tse-investigation-dashboard.git
-cd prod-tse-investigation-dashboard
+git clone https://github.com/eoghanm2013/tse-investigation-hub.git
+cd tse-investigation-hub
 cursor .
 
 # 2. Set up credentials
@@ -36,6 +37,8 @@ pip install -r requirements.txt
 
 Atlassian and Glean use SSO — they'll prompt a one-time login on first use. No tokens needed for those.
 
+**Alternate clone (fork):** [patrickoddatadog/prod-tse-investigation-dashboard](https://github.com/patrickoddatadog/prod-tse-investigation-dashboard) — after clone, `cd prod-tse-investigation-dashboard`.
+
 **Full setup guide:** See [SETUP.md](SETUP.md)
 
 ---
@@ -47,11 +50,11 @@ Ask Cursor:
 > "Investigate Zendesk ticket 2864882"
 
 Cursor will:
-1. Fetch the ticket via Glean
-2. Search for similar historical cases
+1. Fetch the ticket (Zendesk via Chrome or Glean, depending on your setup)
+2. Search for similar historical cases (Glean, Confluence, JIRA, local `archive/`)
 3. Create a case folder in `cases/ZD-2864882/`
 4. Generate `notes.md` with all mandatory sections
-5. Draft a customer response, Zoom call prep, leadership summary, and TLDR handover
+5. Draft a customer response, Zoom call prep, leadership summary, TLDR handover, and placeholders for escalation / feature request sections as needed
 
 ### During Investigation
 - **Ask Cursor** to search Confluence, JIRA, GitHub, Glean, or Slack (via Glean)
@@ -80,6 +83,16 @@ Then open: **http://localhost:8501**
 2. Open the **Escalation** tab in the dashboard and click **Generate Escalation Summary**
 3. Ask Cursor: `"Create JIRA escalation for ZD-12345"`
 
+### Feature request (internal / product triage)
+Use this when the ticket is (or includes) a product gap you want to capture for engineering or FR workflows—not a verbatim customer email.
+
+1. Fill in `cases/ZD-XXXXXX/README.md` and `notes.md` with the ask, customer impact, and technical detail
+2. Ensure `OPENAI_API_KEY` is set in `.env` (same as Zoom summary and escalation generation)
+3. Open the **Feature Request** tab → **Generate Feature Request Summary** (writes or replaces `## Feature Request` in `notes.md` from `README.md` + notes)
+4. Use **Regenerate Feature Request Summary** after you edit the case; polish the markdown before pasting into JIRA or internal FR channels
+
+Template reference for section structure: `templates/communication/feature-request.md`. Cursor rule: `.cursor/rules/feature-request.mdc`.
+
 ---
 
 ## Folder Guide
@@ -91,7 +104,7 @@ Then open: **http://localhost:8501**
 | `.cursor/rules/` | AI behavior rules (investigation workflow, comms, escalation, risk) |
 | `.cursor/hooks/` | Auto-checks for pending transcripts and escalations |
 | `.cursor/skills/` | Reusable investigation skills (ticket pool, attachment downloader) |
-| `templates/` | Customer communication and escalation templates |
+| `templates/` | `communication/` (customer + handover + feature request), `escalation/`, etc. |
 | `docs/` | Escalation criteria, product documentation |
 | `scripts/` | CLI tools (JIRA client, Whisper transcription, server launcher) |
 | `web/` | Dashboard HTML templates and CSS |
@@ -101,15 +114,18 @@ Then open: **http://localhost:8501**
 
 ## Mandatory Investigation Outputs
 
-Every investigation produces these sections in `notes.md`, each rendered as a dashboard tab:
+Every investigation should include these sections in `notes.md`. The dashboard maps each `##` heading to a tab (where the section exists):
 
-| Section | Audience | Purpose |
-|---------|----------|---------|
-| **Draft Customer Response** | Customer | Brief-first format: TL;DR, action items, explanation |
-| **Zoom Call Preparation** | TSE (you) | Agenda, key points, resources for the call |
-| **Leadership Summary** | Non-technical managers | Plain English, strict word limits (45/50/50 words) |
-| **TLDR Handover** | TSEs + managers | Technical details, next steps, what's needed from customer |
-| **Escalation Summary** | Engineering | Auto-generated JIRA-ready summary |
+| Section (`notes.md`) | Dashboard tab | Audience | Purpose |
+|----------------------|---------------|----------|---------|
+| **Proposed Customer Response** | Proposed Customer Response | Customer | Brief-first message body only (review before sending) |
+| **Zoom Call Preparation** | Zoom Call Prep | TSE (you) | Agenda, key points, resources |
+| **Leadership Summary** | Leadership Summary | Non-technical managers | Plain English, strict word limits |
+| **TLDR Handover** | TLDR | TSEs + managers | Technical detail, next steps, important links |
+| **Feature Request** | Feature Request | Engineering / product triage | Optional: use **Generate Feature Request Summary** for JIRA-ready draft (`OPENAI_API_KEY`) |
+| **Escalation Summary** | Escalation | Engineering | Optional: **Generate Escalation Summary** for JIRA-ready escalation |
+
+Full investigation narrative lives under **Investigation Notes** (same file, `##` sections the app extracts).
 
 ---
 
@@ -126,6 +142,7 @@ Pre-configured AI rules that shape how Cursor assists you:
 | `risk-assessment` | Rollback/risk checklist for config change recommendations |
 | `zoom-transcript` | Auto-summarisation pipeline for call recordings |
 | `api-access-constraints` | Read/write boundaries for each external service |
+| `feature-request` | Guidance when authoring or generating the `## Feature Request` section |
 
 **Hooks** run automatically on session start to flag unsummarised transcripts and pending escalations.
 
@@ -153,6 +170,7 @@ Pre-configured AI rules that shape how Cursor assists you:
 "Draft a customer response for this case"
 "Prepare a Zoom call agenda for ZD-12345"
 "Create JIRA escalation for ZD-12345"
+"Draft a feature request summary for ZD-12345"   # or use the dashboard Feature Request tab
 ```
 
 ---
@@ -184,6 +202,7 @@ Pre-configured AI rules that shape how Cursor assists you:
 | Dashboard won't start | Check `python3 --version` (need 3.9+); check port 8501 |
 | Whisper transcription fails | Install ffmpeg: `brew install ffmpeg` |
 | OpenAI summarisation fails | Check `OPENAI_API_KEY` in `.env` |
+| Feature Request or Escalation generate fails | Same as OpenAI; confirm model env vars if you override defaults |
 | MCP not loading | Verify `.cursor/mcp.json` exists; restart Cursor |
 
 ---
@@ -193,7 +212,9 @@ Pre-configured AI rules that shape how Cursor assists you:
 - **Full setup guide:** [SETUP.md](SETUP.md)
 - **Workspace structure:** [STRUCTURE.md](STRUCTURE.md)
 - **Escalation criteria:** [docs/escalation-criteria.md](docs/escalation-criteria.md)
-- **Repo:** [github.com/patrickoddatadog/prod-tse-investigation-dashboard](https://github.com/patrickoddatadog/prod-tse-investigation-dashboard)
+- **Agent vs dashboard flow:** [docs/agent-flow.md](docs/agent-flow.md)
+- **Primary repo:** [eoghanm2013/tse-investigation-hub](https://github.com/eoghanm2013/tse-investigation-hub)
+- **Fork:** [patrickoddatadog/prod-tse-investigation-dashboard](https://github.com/patrickoddatadog/prod-tse-investigation-dashboard)
 
 ---
 
