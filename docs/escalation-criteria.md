@@ -175,7 +175,7 @@ Use the template in `templates/escalation/escalation-template.md`
 ```
 
 ### 3. Notify Customer
-Use template: `templates/customer-communication/escalation-notice.md`
+Use template: `templates/communication/escalation-notice.md`
 
 ### 4. Stay Involved
 - Monitor JIRA ticket for updates

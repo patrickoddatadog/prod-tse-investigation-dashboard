@@ -39,6 +39,7 @@
   <button class="tab" data-tab="zoom">Zoom Call Prep</button>
   <button class="tab" data-tab="transcript">Zoom Call Transcript</button>
   <button class="tab" data-tab="escalation">Escalation</button>
+  <button class="tab" data-tab="feature-request">Feature Request</button>
   {% if case.has_notes %}
   <button class="tab" data-tab="notes">Investigation Notes</button>
   {% endif %}
@@ -331,6 +332,43 @@
     </div>
   </div>
 
+  <!-- ── Feature Request ─────────────────────────────────────────── -->
+  <div class="tab-panel" id="panel-feature-request">
+    <div id="feature-request-content-container">
+    {% if case.feature_request_html %}
+    <div class="section-card section-card-blue">
+      <div class="section-card-header">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.5V18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3.5A7 7 0 0 0 12 2z"/></svg>
+        <h3>Feature Request</h3>
+        <button class="btn btn-sm btn-copy" onclick="copyCard(this, 'feature-request-raw')">Copy</button>
+      </div>
+      <div class="section-card-body markdown-body">
+        {{ case.feature_request_html | safe }}
+      </div>
+      <textarea class="sr-only" id="feature-request-raw">{{ case.feature_request_raw }}</textarea>
+    </div>
+    <div style="text-align: center; margin-top: 1rem;">
+      <button class="btn btn-secondary" id="btn-regenerate-feature-request" onclick="generateFeatureRequest()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Regenerate Feature Request Summary
+      </button>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.5V18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3.5A7 7 0 0 0 12 2z"/></svg>
+      <h3>No feature request summary yet</h3>
+      <p>Generate a JIRA-ready feature request from the investigation notes and case data.</p>
+      <div style="margin-top: 1rem;">
+        <button class="btn btn-primary" id="btn-generate-feature-request" onclick="generateFeatureRequest()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.5V18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3.5A7 7 0 0 0 12 2z"/></svg>
+          Generate Feature Request Summary
+        </button>
+      </div>
+    </div>
+    {% endif %}
+    </div>
+  </div>
+
 </div>
 
 {% block scripts %}
@@ -339,6 +377,7 @@ var CASE_ID = {{ case.id | tojson }};
 var STATUS_URL = '/case/' + CASE_ID + '/transcription-status';
 var SUMMARISE_URL = '/case/' + CASE_ID + '/summarise-transcript';
 var ESCALATION_URL = '/case/' + CASE_ID + '/generate-escalation';
+var FEATURE_REQUEST_URL = '/case/' + CASE_ID + '/generate-feature-request';
 var _pollTimer = null;
 var _polling = false;
 
@@ -376,6 +415,49 @@ function generateEscalation() {
         btn.disabled = false;
         btn.innerHTML = originalHTML;
         alert('Escalation generation failed: ' + (result.data.error || 'Unknown error'));
+      }
+    })
+    .catch(function(err) {
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+      alert('Network error — please try again.');
+    });
+}
+
+function generateFeatureRequest() {
+  var btn = document.getElementById('btn-generate-feature-request') || document.getElementById('btn-regenerate-feature-request');
+  if (!btn) return;
+  var originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML =
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> ' +
+    'Generating…';
+
+  fetch(FEATURE_REQUEST_URL, { method: 'POST' })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(result) {
+      if (result.ok && result.data.feature_request_html) {
+        var container = document.getElementById('feature-request-content-container');
+        container.innerHTML =
+          '<div class="section-card section-card-blue">' +
+            '<div class="section-card-header">' +
+              '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.5V18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3.5A7 7 0 0 0 12 2z"/></svg>' +
+              '<h3>Feature Request</h3>' +
+              '<button class="btn btn-sm btn-copy" onclick="copyCard(this, \'feature-request-raw\')">Copy</button>' +
+            '</div>' +
+            '<div class="section-card-body markdown-body">' + result.data.feature_request_html + '</div>' +
+            '<textarea class="sr-only" id="feature-request-raw">' + escapeTextarea(result.data.feature_request_raw || '') + '</textarea>' +
+          '</div>' +
+          '<div style="text-align: center; margin-top: 1rem;">' +
+            '<button class="btn btn-secondary" id="btn-regenerate-feature-request" onclick="generateFeatureRequest()">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> ' +
+              'Regenerate Feature Request Summary' +
+            '</button>' +
+          '</div>';
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        alert('Feature request generation failed: ' + (result.data.error || 'Unknown error'));
       }
     })
     .catch(function(err) {
@@ -444,6 +526,7 @@ document.querySelectorAll('.tab').forEach(btn => {
 (function() {
   var hash = location.hash.replace('#', '');
   if (hash === 'panel-transcript') hash = 'transcript';
+  if (hash === 'panel-feature-request') hash = 'feature-request';
   if (hash && document.querySelector('.tab[data-tab="' + hash + '"]')) {
     activateTab(hash);
   }

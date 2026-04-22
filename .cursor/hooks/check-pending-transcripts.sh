@@ -66,7 +66,7 @@ if [ ${#pending_cases[@]} -gt 0 ]; then
   cases_list="${cases_list:2}"
 
   jq -n --arg cases "$cases_list" '{
-    "followup_message": ("PENDING TRANSCRIPT SUMMARISATION: Case(s) " + $cases + " have raw Zoom call transcripts that need summarisation. For each case: read the ## Zoom Call Transcript section in cases/<case-id>/notes.md, find the ### Raw Transcript block, and replace it with a structured summary (### Summary of Issue, ### Findings on Call, ### Workaround) following templates/customer-communication/zoom-call-transcript.md. Keep the metadata fields (Source File, Call Date, Raw transcript). See .cursor/rules/zoom-transcript.mdc for details.")
+    "followup_message": ("PENDING TRANSCRIPT SUMMARISATION: Case(s) " + $cases + " have raw Zoom call transcripts that need summarisation. For each case: read the ## Zoom Call Transcript section in cases/<case-id>/notes.md, find the ### Raw Transcript block, and replace it with a structured summary (### Summary of Issue, ### Findings on Call, ### Workaround) following templates/communication/zoom-call-transcript.md. Keep the metadata fields (Source File, Call Date, Raw transcript). See .cursor/rules/zoom-transcript.mdc for details.")
   }'
   exit 0
 fi

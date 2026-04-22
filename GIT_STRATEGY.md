@@ -56,7 +56,7 @@ web/static/style.css              # Dashboard CSS
 cases/.template/                  # Case investigation template
   cases/.template/notes.md        # Notes scaffold with all mandatory sections
 
-templates/customer-communication/
+templates/communication/
   acknowledgment.md
   requesting-info.md
   solution.md
@@ -226,7 +226,7 @@ pip install -r requirements.txt
 **DO share:**
 ```bash
 # Improve a template
-git add templates/customer-communication/solution.md
+git add templates/communication/solution.md
 git commit -m "Add rollback section to solution template"
 git push
 

@@ -129,7 +129,7 @@ Cursor will:
 |------|---------|
 | `investigation-workflow` | Step-by-step investigation process |
 | `mandatory-outputs` | Ensures all required sections in `notes.md` |
-| `customer-communication` | Brief-first tone, template usage |
+| `communication` | Brief-first tone, template usage |
 | `escalation-criteria` | When and how to escalate |
 | `risk-assessment` | Rollback/risk checklist for config changes |
 | `zoom-transcript` | Auto-summarisation pipeline |

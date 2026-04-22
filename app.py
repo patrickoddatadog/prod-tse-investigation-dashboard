@@ -144,6 +144,14 @@ _ESCALATION_SUMMARY_HEADING_RE = re.compile(
     re.IGNORECASE,
 )
 
+_FEATURE_REQUEST_HEADING_RE = re.compile(
+    r"^##\s+Feature\s+Request$",
+    re.IGNORECASE,
+)
+
+_FEATURE_REQUEST_TEMPLATE_PATH = TEMPLATES_DIR / "communication" / "feature-request.md"
+_feature_request_system_prompt_cache: Optional[str] = None
+
 
 
 def _extract_section(text: str, heading_re) -> str:
@@ -231,6 +239,10 @@ def extract_zoom_transcript(notes_raw: str) -> str:
 
 def extract_escalation_summary(notes_raw: str) -> str:
     return _extract_section(notes_raw, _ESCALATION_SUMMARY_HEADING_RE)
+
+
+def extract_feature_request(notes_raw: str) -> str:
+    return _extract_section(notes_raw, _FEATURE_REQUEST_HEADING_RE)
 
 
 def extract_important_links(notes_raw: str) -> str:
@@ -436,6 +448,119 @@ def _generate_escalation_summary(readme_raw: str, notes_raw: str) -> str:
     return resp.choices[0].message.content.strip()
 
 
+def _get_feature_request_system_prompt() -> str:
+    """Build system prompt from templates/communication/feature-request.md (cached)."""
+    global _feature_request_system_prompt_cache
+    if _feature_request_system_prompt_cache is not None:
+        return _feature_request_system_prompt_cache
+
+    template_ref = ""
+    if _FEATURE_REQUEST_TEMPLATE_PATH.exists():
+        template_ref = _FEATURE_REQUEST_TEMPLATE_PATH.read_text(encoding="utf-8")
+    else:
+        template_ref = (
+            "Required sub-sections under ## Feature Request, in order:\n"
+            "### Description\n### User story (who, what, why)\n"
+            "### Pain point and business impact\n### Workaround\n"
+        )
+
+    _feature_request_system_prompt_cache = f"""\
+You are a Technical Support Engineer drafting a **Feature Request** for internal \
+engineering / product triage (same audience as a JIRA Feature Request).
+
+Use this template file as authoritative guidance for tone, audience, and structure:
+
+---
+{template_ref}
+---
+
+Given the full case context (README.md and investigation notes.md), write **only** \
+the body that belongs under `## Feature Request` in notes.md.
+
+Output rules:
+- Start with `### Description` — do **not** include the `## Feature Request` heading.
+- Include **exactly these four** `###` headings **in this order**, with substantive \
+content under each: Description; User story (who, what, why); Pain point and business \
+impact; Workaround.
+- Technical detail is welcome; preserve exact error messages, versions, product names, \
+and customer wording when it clarifies the ask.
+- If the case is not actually a feature request, still produce the four sections and \
+state that clearly in Description (triage may reclassify).
+- If information is missing for a point, write "Not available in case notes" — do not invent facts.
+- For Workaround use **None** or **None identified** when none exists in the case data.
+- No preamble, no closing commentary, no extra sections outside those four headings.
+"""
+    return _feature_request_system_prompt_cache
+
+
+def _generate_feature_request_summary(readme_raw: str, notes_raw: str) -> str:
+    """Call OpenAI to produce a structured feature request from case data."""
+    import openai
+
+    api_key = os.environ.get("OPENAI_API_KEY", "")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY is not set")
+
+    model = os.environ.get("OPENAI_SUMMARY_MODEL", "gpt-4o-mini")
+    client = openai.OpenAI(api_key=api_key)
+
+    case_context = f"## README.md\n\n{readme_raw}\n\n---\n\n## Investigation Notes (notes.md)\n\n{notes_raw}"
+
+    resp = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": _get_feature_request_system_prompt()},
+            {"role": "user", "content": case_context},
+        ],
+        temperature=0.2,
+    )
+    return resp.choices[0].message.content.strip()
+
+
+def _write_feature_request_section(notes_path: Path, summary: str) -> str:
+    """Write or replace the ## Feature Request section in notes.md."""
+    notes_raw = notes_path.read_text(encoding="utf-8")
+    lines = notes_raw.splitlines()
+
+    section_start = None
+    section_end = None
+    for i, line in enumerate(lines):
+        if _FEATURE_REQUEST_HEADING_RE.match(line.strip()):
+            section_start = i
+            continue
+        if section_start is not None and section_end is None:
+            stripped = line.strip()
+            if stripped.startswith("## ") or stripped == "---":
+                section_end = i
+                break
+
+    new_section_body = ["", summary, "", "---"]
+
+    if section_start is not None:
+        end = section_end if section_end is not None else len(lines)
+        lines[section_start + 1 : end] = new_section_body
+    else:
+        insert_at: Optional[int] = None
+        for i, line in enumerate(lines):
+            if _ESCALATION_SUMMARY_HEADING_RE.match(line.strip()):
+                insert_at = i
+                break
+        if insert_at is None:
+            for i, line in enumerate(lines):
+                if re.match(r"^##\s+Escalation\s+Notes", line.strip(), re.IGNORECASE):
+                    insert_at = i
+                    break
+        if insert_at is None:
+            insert_at = len(lines)
+
+        insert_block = ["", "## Feature Request"] + new_section_body + [""]
+        lines[insert_at:insert_at] = insert_block
+
+    updated = "\n".join(lines)
+    notes_path.write_text(updated, encoding="utf-8")
+    return updated
+
+
 def _write_escalation_section(notes_path: Path, summary: str) -> str:
     """Write or replace the ## Escalation Summary section in notes.md."""
     notes_raw = notes_path.read_text(encoding="utf-8")
@@ -529,6 +654,7 @@ def load_case(case_id: str) -> Optional[dict]:
     zoom_raw = extract_zoom_call(notes_raw)
     zoom_transcript_raw = extract_zoom_transcript(notes_raw)
     escalation_raw = extract_escalation_summary(notes_raw)
+    feature_request_raw = extract_feature_request(notes_raw)
     important_links_raw = extract_important_links(notes_raw)
 
     requester = (
@@ -579,6 +705,8 @@ def load_case(case_id: str) -> Optional[dict]:
         "transcript_pending": has_pending_transcript(notes_raw),
         "escalation_raw": escalation_raw,
         "escalation_html": render_md(escalation_raw) if escalation_raw else "",
+        "feature_request_raw": feature_request_raw,
+        "feature_request_html": render_md(feature_request_raw) if feature_request_raw else "",
         "important_links_raw": important_links_raw,
         "important_links_html": render_md(important_links_raw) if important_links_raw else "",
         "last_modified": datetime.fromtimestamp(case_dir.stat().st_mtime),
@@ -892,6 +1020,37 @@ def generate_escalation(case_id: str):
     escalation_html = render_md(section) if section else ""
 
     return jsonify({"escalation_html": escalation_html, "escalation_raw": section})
+
+
+@app.route("/case/<case_id>/generate-feature-request", methods=["POST"])
+def generate_feature_request(case_id: str):
+    """Generate a JIRA-ready feature request summary from the case data using OpenAI."""
+    case_dir = CASES_DIR / case_id
+    if not case_dir.exists():
+        abort(404)
+
+    readme_path = case_dir / "README.md"
+    notes_path = case_dir / "notes.md"
+
+    if not notes_path.exists():
+        return jsonify({"error": "notes.md not found"}), 404
+
+    readme_raw = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    notes_raw = notes_path.read_text(encoding="utf-8")
+
+    try:
+        summary = _generate_feature_request_summary(readme_raw, notes_raw)
+    except Exception as e:
+        log.error("Feature request summary generation failed for %s: %s", case_id, e)
+        return jsonify({"error": f"Generation failed: {e}"}), 500
+
+    updated_notes = _write_feature_request_section(notes_path, summary)
+    section = extract_feature_request(updated_notes)
+    feature_request_html = render_md(section) if section else ""
+
+    return jsonify(
+        {"feature_request_html": feature_request_html, "feature_request_raw": section}
+    )
 
 
 @app.route("/case/<case_id>/remove", methods=["POST"])

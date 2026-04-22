@@ -40,7 +40,7 @@ prod-tse-investigation-dashboard/
 │   ├── rules/                    # AI behavior rules
 │   │   ├── investigation-workflow.mdc
 │   │   ├── mandatory-outputs.mdc
-│   │   ├── customer-communication.mdc
+│   │   ├── communication.mdc
 │   │   ├── escalation-criteria.mdc
 │   │   ├── risk-assessment.mdc
 │   │   ├── zoom-transcript.mdc

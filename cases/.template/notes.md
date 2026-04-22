@@ -190,7 +190,7 @@ See `assets/screenshots/`:
 
 > **Always include a draft customer-facing response.** Review and adapt before sending.
 > Follow the Brief-First approach: TL;DR → Action items → Explanation → Technical details (if needed).
-> Use templates from `templates/customer-communication/` as a starting point.
+> Use templates from `templates/communication/` as a starting point.
 
 Hi [Customer Name],
 
@@ -227,7 +227,7 @@ Datadog Technical Support
 
 ## Leadership Summary
 
-> Follow ONLY `templates/customer-communication/leadership-summary.md`.
+> Follow ONLY `templates/communication/leadership-summary.md`.
 > This is a SEPARATE section from TLDR Handover. It is for a **non-technical** audience (managers triaging tickets).
 > **STRICT CONSTRAINTS:** Leadership Summary ≤45 words | Investigation ≤50 words | Next Steps ≤50 words. All non-technical.
 
@@ -244,7 +244,7 @@ Datadog Technical Support
 
 ## TLDR Handover
 
-> Follow ONLY `templates/customer-communication/tldr-handover.md`.
+> Follow ONLY `templates/communication/tldr-handover.md`.
 > This is a SEPARATE section from Leadership Summary. It is for **TSEs and managers** and CAN include technical detail.
 
 ### Leadership Summary
@@ -281,6 +281,16 @@ Datadog Technical Support
 
 ### Workaround
 [Auto-generated from Zoom call transcript]
+
+---
+
+## Feature Request
+
+> Auto-generated via the **Generate Feature Request Summary** button on the POD Ticket Dashboard "Feature Request" tab.
+> Uses OpenAI to synthesise README.md and investigation notes into a JIRA-ready feature request (see `templates/communication/feature-request.md`).
+> Can be regenerated at any time if investigation notes are updated.
+
+[Click "Generate Feature Request Summary" on the Feature Request tab to populate this section]
 
 ---
 

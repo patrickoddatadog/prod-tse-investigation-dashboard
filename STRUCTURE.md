@@ -13,7 +13,7 @@ prod-tse-investigation-dashboard/
 │   ├── rules/                        # AI behavior rules
 │   │   ├── investigation-workflow.mdc    # Step-by-step investigation process
 │   │   ├── mandatory-outputs.mdc         # Required sections in notes.md
-│   │   ├── customer-communication.mdc    # Brief-first tone, template usage
+│   │   ├── communication.mdc    # Brief-first tone, template usage
 │   │   ├── escalation-criteria.mdc       # When and how to escalate
 │   │   ├── risk-assessment.mdc           # Rollback/risk checklist for config changes
 │   │   ├── zoom-transcript.mdc           # Auto-summarisation pipeline
@@ -51,7 +51,7 @@ prod-tse-investigation-dashboard/
 ├── archive/                          # Resolved cases by month (gitignored)
 │
 ├── templates/                        # Customer communication & escalation templates
-│   ├── customer-communication/
+│   ├── communication/
 │   │   ├── acknowledgment.md             # Initial ticket acknowledgment
 │   │   ├── requesting-info.md            # Requesting info from customer
 │   │   ├── solution.md                   # Providing a solution/workaround

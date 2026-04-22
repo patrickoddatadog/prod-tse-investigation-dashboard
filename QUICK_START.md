@@ -57,7 +57,7 @@ Cursor will:
 - **Ask Cursor** to search Confluence, JIRA, GitHub, Glean, or Slack (via Glean)
 - **Drop files** into `cases/ZD-2864882/assets/` (logs, screenshots, recordings)
 - **Document findings** in `notes.md` — each `##` section renders as a tab in the dashboard
-- **Use templates** from `templates/customer-communication/` for customer responses
+- **Use templates** from `templates/communication/` for customer responses
 
 ### Launch the Web Dashboard
 ```bash
@@ -121,7 +121,7 @@ Pre-configured AI rules that shape how Cursor assists you:
 |------|-------------|
 | `investigation-workflow` | Step-by-step process for investigating tickets |
 | `mandatory-outputs` | Ensures all required sections exist in `notes.md` |
-| `customer-communication` | Brief-first tone, template usage |
+| `communication` | Brief-first tone, template usage |
 | `escalation-criteria` | When and how to escalate to Engineering |
 | `risk-assessment` | Rollback/risk checklist for config change recommendations |
 | `zoom-transcript` | Auto-summarisation pipeline for call recordings |

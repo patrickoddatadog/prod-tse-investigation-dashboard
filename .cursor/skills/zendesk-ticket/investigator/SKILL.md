@@ -14,7 +14,7 @@ Can be used standalone or triggered by the user during an investigation workflow
 Just say: **"investigate ticket #1234567"** or **"look into ZD-1234567"**
 
 The agent will:
-1. Read the ticket from Zendesk via Glean
+1. Read the ticket from Zendesk via Zendesk Chrome bridge.
 2. Search for similar resolved tickets
 3. Search internal docs (Confluence)
 4. Look up customer context (Salesforce)
@@ -54,7 +54,6 @@ This is a legal/compliance requirement. No exceptions.
 
 1. **Read ticket** — Full content via Chrome JS (real-time) or Glean fallback (`user-glean_ai-code-read_document`)
 2. **Download attachments** — List and download attachments via Chrome JS (flares, logs, screenshots). Flares are extracted to `cases/ZD-{id}/assets/flare/` and analyzed directly (status.log, config-check.log, etc.).
-2.5. **Local knowledge base** — Search `solutions/known-issues.md` and `archive/` for matching patterns before going external
 3. **Similar tickets** — Search Zendesk for resolved tickets with matching symptoms
 4. **Internal docs** — Search Confluence for runbooks, troubleshooting guides, known issues
 5. **Public docs** — Search docs.datadoghq.com for relevant product documentation

@@ -1,0 +1,25 @@
+---
+description: Apply when generating a Feature Request Summary.
+alwaysApply: false
+---
+
+## Feature Request Summary
+
+The POD Ticket Dashboard has a **Feature Request** tab that generates a Feature Request summary from the case's `README.md` and `notes.md`.
+
+### How it works
+1. TSE clicks **Generate Feature Request Summary** on the Feature Request tab
+2. `app.py` reads `README.md` + `notes.md` and sends them to OpenAI
+3. OpenAI produces a structured summary following @templates/communication/feature-request.md
+4. The summary is written to the `## Feature Request` section of `notes.md`
+5. The dashboard displays the rendered summary with a **Copy** button for pasting into JIRA
+
+### When to generate
+- When investigation notes have enough context
+- Before creating a JIRA feature request — use the generated summary as the ticket body
+
+### Rules
+- Regenerate the summary if investigation notes are updated with new findings
+- Always review the generated summary before pasting into JIRA — add any missing context
+- `OPENAI_API_KEY` must be set in `.env` for generation to work
+

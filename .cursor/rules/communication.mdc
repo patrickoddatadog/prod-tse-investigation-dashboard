@@ -1,5 +1,5 @@
 ---
-description: Guidelines for drafting customer-facing communication — brief-first approach, tone, formatting, and template usage. Apply when writing or reviewing messages to customers.
+description: Guidelines for drafting customer-facing communication — brief-first approach, tone, formatting, and template usage. Apply when writing or reviewing messages to customers, and when using shared communication templates (e.g. leadership summary, feature request for engineering).
 alwaysApply: false
 ---
 
@@ -30,11 +30,12 @@ When communicating with customers:
 
 ## Templates
 
-Use templates from @templates/customer-communication/ for:
-- Initial acknowledgment → @templates/customer-communication/acknowledgment.md
-- Requesting additional information → @templates/customer-communication/requesting-info.md
-- Providing solutions/workarounds → @templates/customer-communication/solution.md
-- Escalation notifications → @templates/customer-communication/escalation-notice.md
-- Zoom call preparation → @templates/customer-communication/zoom-call.md
-- Leadership summaries → @templates/customer-communication/leadership-summary.md
-- TLDR handovers → @templates/customer-communication/tldr-handover.md
+Use templates from @templates/communication/ for:
+- Initial acknowledgment → @templates/communication/acknowledgment.md
+- Requesting additional information → @templates/communication/requesting-info.md
+- Providing solutions/workarounds → @templates/communication/solution.md
+- Escalation notifications → @templates/communication/escalation-notice.md
+- Zoom call preparation → @templates/communication/zoom-call.md
+- Leadership summaries → @templates/communication/leadership-summary.md
+- TLDR handovers → @templates/communication/tldr-handover.md
+- Feature requests (internal / engineering review) → @templates/communication/feature-request.md

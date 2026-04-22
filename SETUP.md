@@ -139,7 +139,7 @@ prod-tse-investigation-dashboard/
 ├── archive/                  # Resolved cases by month (gitignored)
 ├── docs/                     # Escalation criteria, product docs
 ├── templates/                # Customer communication & escalation templates
-│   ├── customer-communication/
+│   ├── communication/
 │   └── escalation/
 ├── scripts/                  # CLI tools & utilities
 │   ├── jira_client.py         # JIRA search & escalation creation
@@ -218,7 +218,7 @@ cp -r cases/.template cases/ZD-12345
 - Ask Cursor to search Confluence, JIRA, GitHub, or Glean for context
 - Drop logs, screenshots, and recordings into `cases/ZD-12345/assets/`
 - Document findings in `notes.md` -- the dashboard renders each `##` section as a separate tab
-- Use templates from `templates/customer-communication/` for responses
+- Use templates from `templates/communication/` for responses
 
 ### Zoom call recording workflow
 
@@ -251,7 +251,7 @@ The workspace ships with pre-configured AI rules that shape Cursor's behavior:
 |---|---|
 | `investigation-workflow` | Step-by-step process for investigating tickets |
 | `mandatory-outputs` | Ensures all required sections exist in `notes.md` |
-| `customer-communication` | Brief-first tone, template usage |
+| `communication` | Brief-first tone, template usage |
 | `escalation-criteria` | When and how to escalate |
 | `risk-assessment` | Rollback/risk checklist for config change recommendations |
 | `zoom-transcript` | Auto-summarisation pipeline for call recordings |

@@ -79,20 +79,6 @@ Clean up temp files:
 rm -f /tmp/zd_list_attachments.scpt /tmp/zd_download.scpt
 ```
 
-## Step 2.5: Check local knowledge base
-
-Before searching external sources, check the workspace's own knowledge:
-
-1. Search `solutions/known-issues.md` for matching product/symptoms:
-```bash
-rg -i "KEYWORD1|KEYWORD2" solutions/known-issues.md
-```
-
-2. Search `archive/` for similar historical cases:
-```bash
-rg -ril "KEYWORD1|KEYWORD2" archive/
-```
-
 3. If matches found, read the relevant files and reference them in the report under "Local Knowledge Base Matches". These are trusted — they come from previously resolved cases and confirmed known issues.
 
 Use the product area and key error messages/symptoms from Step 1 as keywords.
@@ -356,7 +342,7 @@ After the Timeline, include the mandatory `## Proposed Customer Response` sectio
 
 **CRITICAL:** The `## Proposed Customer Response` section must contain ONLY the customer-facing message body. Do NOT include any TL;DR line, summary preamble, or internal annotations. The TL;DR belongs in `response.md` and `## TLDR Handover` — never in this section.
 
-After the Proposed Customer Response, include the mandatory `## TLDR Handover` section. **This section directly populates the "TLDR" tab in the HQ TSE Dashboard web app.** Use the template from `templates/customer-communication/tldr-handover.md`. It must contain exactly 5 subsections:
+After the Proposed Customer Response, include the mandatory `## TLDR Handover` section. **This section directly populates the "TLDR" tab in the HQ TSE Dashboard web app.** Use the template from `templates/communication/tldr-handover.md`. It must contain exactly 5 subsections:
 
 ```markdown
 
